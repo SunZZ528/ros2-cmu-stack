@@ -3,6 +3,7 @@
 	<arg name="rviz" default="true" />
 
 	<node pkg="transform_sensors" exec="transform_everything" name="transform_everything" output="screen" />
+	<!-- <node pkg="transform_sensors" exec="transform_mid360" name="transform_mid360" output="screen" /> -->
 
 	<node pkg="point_lio_unilidar" exec="pointlio_mapping" name="laserMapping" output="screen">
 		<param from="$(find-pkg-share point_lio_unilidar)/config/utlidar.yaml" />

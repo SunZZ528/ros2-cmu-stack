@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from rclpy.time import Time
@@ -19,8 +19,8 @@ import os
 class Repuber(Node):
     def __init__(self):
         super().__init__('sensor_transformer')
-        self.imu_sub = self.create_subscription(Imu, '/utlidar/imu', self.imu_callback, 50)
-        self.cloud_sub = self.create_subscription(PointCloud2, '/utlidar/cloud', self.cloud_callback, 50)
+        self.imu_sub = self.create_subscription(Imu, '/go2_2/imu', self.imu_callback, 50)
+        self.cloud_sub = self.create_subscription(PointCloud2, '/go2_2/motion_corrected_cloud', self.cloud_callback, 50)
         
         self.imu_raw_pub = self.create_publisher(Imu, '/utlidar/transformed_raw_imu', 50)
         self.imu_pub = self.create_publisher(Imu, '/utlidar/transformed_imu', 50)
@@ -66,11 +66,11 @@ class Repuber(Node):
         self.body2cloud_trans = TransformStamped()
         self.body2cloud_trans.header.stamp = self.get_clock().now().to_msg()
         self.body2cloud_trans.header.frame_id = "body"
-        self.body2cloud_trans.child_frame_id = "utlidar_lidar_1"
+        self.body2cloud_trans.child_frame_id = "livox_mid360"
         self.body2cloud_trans.transform.translation.x = 0.0
         self.body2cloud_trans.transform.translation.y = 0.0
         self.body2cloud_trans.transform.translation.z = 0.0
-        quat = tf_transformations.quaternion_from_euler(0, 2.87820258505555555556, 0)
+        quat = tf_transformations.quaternion_from_euler(0, 0.2268, 0)
         self.body2cloud_trans.transform.rotation.x = quat[0]
         self.body2cloud_trans.transform.rotation.y = quat[1]
         self.body2cloud_trans.transform.rotation.z = quat[2]
@@ -79,11 +79,11 @@ class Repuber(Node):
         self.body2imu_trans = TransformStamped()
         self.body2imu_trans.header.stamp = self.get_clock().now().to_msg()
         self.body2imu_trans.header.frame_id = "body"
-        self.body2imu_trans.child_frame_id = "utlidar_imu_1"
+        self.body2imu_trans.child_frame_id = "base_imu"
         self.body2imu_trans.transform.translation.x = 0.0
         self.body2imu_trans.transform.translation.y = 0.0
         self.body2imu_trans.transform.translation.z = 0.0
-        quat = tf_transformations.quaternion_from_euler(0, 2.87820258505555555556, 3.14159265358)
+        quat = tf_transformations.quaternion_from_euler(0, 0, 0)
         self.body2imu_trans.transform.rotation.x = quat[0]
         self.body2imu_trans.transform.rotation.y = quat[1]
         self.body2imu_trans.transform.rotation.z = quat[2]
